@@ -17,7 +17,7 @@ namespace CYA{
 	public:
 		Language();
 		void invert(void);
-		void concatenate(Language&);
+		void concatenate(Language);
 		void unite(Language&);
 		void difference(Language&);
 		void intersection(Language&);

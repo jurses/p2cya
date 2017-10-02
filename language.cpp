@@ -1,15 +1,32 @@
 #include "language.hpp"
 
+	/*
+	Atención:
+	Nadie se molestó en decirme que std::set guarda los datos constantes,
+	es decir nadie puede modificarlos para evitar perder el hash, estructura,
+	interna..., lo correcto quitar y volver a poner
+	*/
+
 namespace CYA{
 	void Language::invert(void){
-		for(std::set<Word>::iterator it = setWords_.begin(); it != setWords_.end(); it++)
-			it->invert();
+		Word tempWord;
+		for(std::set<Word>::iterator it = setWords_.begin(); it != setWords_.end(); it++){
+			tempWord = *it;
+			setWords_.erase(*it);
+			tempWord.invert();
+			setWords_.insert(tempWord);
+		}
 	}
 
-	void Language::concatenate(Language& L){
+	void Language::concatenate(Language L){
+		Word tempWord;
 		for(std::set<Word>::iterator it1 = setWords_.begin(); it1 != setWords_.end(); it1++)
-			for(std::set<Word>::iterator it2 = L.setWords_.begin(); it2 != L.setWords_.end(); it2++)
-				it1->concatenate(*it2);
+			for(std::set<Word>::iterator it2 = L.setWords_.begin(); it2 != L.setWords_.end(); it2++){
+				tempWord = *it1;
+				setWords_.erase(*it1);
+				tempWord.concatenate(*it2);
+				setWords_.insert(tempWord);
+			}
 	}
 
 	void Language::unite(Language& L){

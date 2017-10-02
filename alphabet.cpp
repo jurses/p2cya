@@ -9,4 +9,9 @@ namespace CYA{
 	void Alphabet::insert(const char w){
 		setAlphab_.insert(w);
 	}
+
+	Alphabet& Alphabet::operator=(const Alphabet& A){
+		setAlphab_ = A.setAlphab_;
+		return *this;
+	}
 }

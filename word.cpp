@@ -5,6 +5,18 @@ namespace CYA{
 		word_.resize(0);
 		empty_ = true;
 	}
+
+	Word::Word(const Alphabet& A)
+	{
+		alphabet_ = A;
+	}
+
+	Word::Word(const Word& w){
+		alphabet_ = w.alphabet_;
+		word_ = w.word_;
+		empty = w.empty_;
+	}
+
 	const char* Word::obtWord(void){
 		return word_.c_str();
 	}
@@ -51,7 +63,7 @@ namespace CYA{
 		return word_;
 	}
 
-	void Word::concatenate(Word& w){
+	void Word::concatenate(Word w){
 		word_ += w.obtString();
 	}
 
@@ -60,5 +72,10 @@ namespace CYA{
 			return true;
 		else
 			return false;
+	}
+
+	std::ostream& Word::write(std::ostream& os){
+		os << word_;
+		return os;
 	}
 }

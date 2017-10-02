@@ -11,6 +11,7 @@ namespace CYA{
 	public:
 		void insert(const char);
 		const std::set<char> obtSet(void);
+		Alphabet& operator=(const Alphabet&);
 	};
 }
 
