@@ -14,5 +14,6 @@ std::string invert(std::string s1){
 
 int main(void){
 	std::string cadena = "hola";
-	std::cout << invert(cadena) << std::endl;
+	cadena.push_back('s');
+	std::cout << cadena << std::endl;
 }

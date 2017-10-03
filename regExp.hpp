@@ -11,8 +11,9 @@ namespace CYA{
 		std::string parcialLangGen_;
 		void calculateLangGen(void);
 	public:
-		std::ostream& sample(std::ostream&);
-		std::string obtRE(void);
+		RegExp& operator=(std::string&);
+		std::ostream& write(std::ostream&);
+		std::string& obtRE(void);
 		std::string obtPLG(void);
 	};
 }

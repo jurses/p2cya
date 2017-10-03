@@ -17,7 +17,7 @@ namespace CYA{
 		empty_ = w.empty_;
 	}
 
-	const char* Word::obtWord(void){
+	const char* Word::obtWord(void)const{
 		return word_.c_str();
 	}
 

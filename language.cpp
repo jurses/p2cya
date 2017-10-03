@@ -13,6 +13,17 @@ namespace CYA{
 
 	}
 
+	void Language::L2RE(void){
+		std::string tempW;
+		for(std::set<Word>::iterator it = setWords_.begin(); it != --setWords_.end(); it++){
+			tempW = it->obtWord();
+			regularExpression_.obtRE().append(tempW);
+			regularExpression_.obtRE().push_back('|');
+		}
+		
+		regularExpression_.obtRE().append(setWords_.rbegin()->obtWord());
+	}
+
 	void Language::invert(void){
 		Word tempWord;
 		for(std::set<Word>::iterator it = setWords_.begin(); it != setWords_.end(); it++){
@@ -21,6 +32,7 @@ namespace CYA{
 			tempWord.invert();
 			setWords_.insert(tempWord);
 		}
+		L2RE();
 	}
 
 	void Language::concatenate(Language L){
@@ -32,16 +44,19 @@ namespace CYA{
 				tempWord.concatenate(*it2);
 				setWords_.insert(tempWord);
 			}
+		L2RE();
 	}
 
 	void Language::unite(Language& L){
 		for(std::set<Word>::iterator it = L.setWords_.begin(); it != L.setWords_.end(); it++)
 			setWords_.insert(*it);
+		L2RE();
 	}
 
 	void Language::difference(Language& L){
 		for(std::set<Word>::iterator it = L.setWords_.begin(); it != L.setWords_.end(); it++)
 			setWords_.erase(*it);
+		L2RE();
 	}
 
 	void Language::intersection(Language& L){
@@ -51,10 +66,10 @@ namespace CYA{
 				if(*it1 == *it2)
 					aux.insert(*it1);
 			}
+		L2RE();
 	}
 
 	bool Language::subLanguage(Language& L){
-		Word tempWord1, tempWord2;
 		std::set<Word> aux;
 		for(std::set<Word>::iterator it1 = setWords_.begin(); it1 != setWords_.end(); it1++)
 			for(std::set<Word>::iterator it2 = L.setWords_.begin(); it2 != L.setWords_.end(); it2++){
@@ -77,6 +92,7 @@ namespace CYA{
 
 	void Language::power(int n){		
 		powerR(n);
+		L2RE();
 	}
 
 	void Language::powerR(int n){
@@ -88,22 +104,42 @@ namespace CYA{
 			concatenate(*this);
 			powerR(n - 1);
 		}
+		L2RE();
 	}
 
 	void Language::kleenStar(void){
+		L2RE();
 		prodByRE_ = true;
+		std::string tempER;
+		tempER.push_back('(');
+		tempER.append(regularExpression_.obtRE());
+		tempER.push_back(')');
+		tempER.push_back('*');
+		regularExpression_ = tempER;
+	}
+
+	void Language::kleenPlus(void){
+		L2RE();
+		prodByRE_ = true;
+		std::string tempER;
+		tempER.push_back('(');
+		tempER.append(regularExpression_.obtRE());
+		tempER.push_back(')');
+		tempER.push_back('+');
+		regularExpression_ = tempER;
 	}
 
 	Language& Language::operator=(const Language& L){
 		setWords_ = L.setWords_;
 		regularExpression_ = L.regularExpression_;
 		prodByRE_ = L.prodByRE_;
+		L2RE();
 		return *this;
 	}
 
 	std::istream& Language::define(std::istream& is){
 		std::string rawLanguage;
-		is >> rawLanguage;
+		std::getline(is, rawLanguage);
 		if(rawLanguage[0] == '{' && rawLanguage[rawLanguage.size() - 1] == '}'){
 			if(rawLanguage.size() == 2)
 				empty_ = true;
@@ -111,9 +147,10 @@ namespace CYA{
 				Word tW;
 				std::string w;
 				for(int i = 1; i < rawLanguage.size() - 1; i++){
-					if(rawLanguage[i] != ',')
+					if(rawLanguage[i] != ',' && !isspace(rawLanguage[i]))
 						w.push_back(rawLanguage[i]);
-					else{
+
+					if(rawLanguage[i] == ',' || rawLanguage[i + 1] == '}'){
 						tW = w.c_str();
 						w.clear();
 						setWords_.insert(tW);
@@ -121,7 +158,27 @@ namespace CYA{
 				}
 			}
 		}
-		
+		L2RE();
 		return is;
+	}
+
+	std::ostream& Language::write(std::ostream& os){
+		os << '{';
+		if(!empty_){
+			os << setWords_.begin()->obtWord();
+			for(std::set<Word>::iterator it = ++setWords_.begin(); it != setWords_.end(); it++)
+				os << ", " << it->obtWord();
+		}
+		os << '}';
+		return os;
+	}
+	
+	std::ostream& Language::writeRE(std::ostream& os){
+		regularExpression_.write(os);
+		return os;
+	}
+
+	bool Language::isProdByRE(void){
+		return prodByRE_;
 	}
 }
