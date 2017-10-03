@@ -1,7 +1,7 @@
 L1 = {cerdo, oveja, vaca}
 L2 = {leon, serpiente, piedra}
 
-# 1 No reconoce el lenguaje vacío
+# 1 (Solucionado)No reconoce el lenguaje vacío
 # 2 (Solucionado) Invert no funciona correctamente, hay palabras que no invierte
     Solución: El tamaño cambia y las posiciones de entre los elementos del set haciendo
     que setWords_.end() va cambiabdo a medida del for
@@ -12,3 +12,6 @@ L2 = {leon, serpiente, piedra}
     Solución: fallo en el diseño de la potencia y la asimilación de la cadena vacía
 # 5 (Solucionado)Fallo en los cierres, no dan la expresión regular correcta
     Solución: hay que limpiar la cadena de expresión regular
+
+# 6 (solucionado)No realiza la operación de potencia ^0 para la cadena vacía
+    Solución: hay que cambiar el estado de lenguaje vacío

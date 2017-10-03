@@ -14,21 +14,25 @@ namespace CYA{
 	}
 
 	void Language::L2RE(void){
-		std::string tempW;
 		regularExpression_.obtRE().clear();
-		for(std::set<Word>::iterator it = setWords_.begin(); it != --setWords_.end(); it++){
-			tempW = it->obtWord();
-			regularExpression_.obtRE().append(tempW);
-			regularExpression_.obtRE().push_back('|');
+		if(!empty_){
+			std::string tempW;
+			for(std::set<Word>::iterator it = setWords_.begin(); it != --setWords_.end(); it++){
+				tempW = it->obtWord();
+				regularExpression_.obtRE().append(tempW);
+				regularExpression_.obtRE().push_back('|');
+			}
+			
+			regularExpression_.obtRE().append(setWords_.rbegin()->obtWord());
 		}
-		
-		regularExpression_.obtRE().append(setWords_.rbegin()->obtWord());
+		else
+			regularExpression_.obtRE().push_back('0');
+
 	}
 
 	void Language::invert(void){
 		Word tempWord;
 		std::set<Word> tempSetWord;
-		std::cout << setWords_.size() << std::endl;
 		for(std::set<Word>::iterator it = setWords_.begin(); it != setWords_.end(); it++){
 			tempWord = *it;
 			tempWord.invert();
@@ -40,16 +44,18 @@ namespace CYA{
 	}
 
 	void Language::concatenate(Language L){
-		Word tempWord;
-		std::set<Word> tempSetWord;
-		for(std::set<Word>::iterator it1 = setWords_.begin(); it1 != setWords_.end(); it1++)
-			for(std::set<Word>::iterator it2 = L.setWords_.begin(); it2 != L.setWords_.end(); it2++){
-				tempWord = *it1;
-				tempWord.concatenate(*it2);
-				tempSetWord.insert(tempWord);
-			}
+		if(!empty_){
+			Word tempWord;
+			std::set<Word> tempSetWord;
+			for(std::set<Word>::iterator it1 = setWords_.begin(); it1 != setWords_.end(); it1++)
+				for(std::set<Word>::iterator it2 = L.setWords_.begin(); it2 != L.setWords_.end(); it2++){
+					tempWord = *it1;
+					tempWord.concatenate(*it2);
+					tempSetWord.insert(tempWord);
+				}
 
-		setWords_ = tempSetWord;
+			setWords_ = tempSetWord;
+		}
 		L2RE();
 	}
 
@@ -97,12 +103,12 @@ namespace CYA{
 	}
 
 	void Language::power(int n){
-		if(n > 0)	
+		if(n > 0 && !empty_)	
 			powerR(n);
-		else{
-			setWords_.clear();
+		else if(n == 0){
 			Word w('&');
 			setWords_.insert(w);
+			empty_ = false;
 		}
 		L2RE();
 	}
@@ -193,5 +199,9 @@ namespace CYA{
 
 	bool Language::isProdByRE(void){
 		return prodByRE_;
+	}
+
+	bool Language::isEmpty(void){
+		return empty_;
 	}
 }

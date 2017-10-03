@@ -35,6 +35,7 @@ namespace CYA{
 		void kleenStar(void);
 		void kleenPlus(void);
 		bool isProdByRE(void);
+		bool isEmpty(void)
 	};
 }
 
