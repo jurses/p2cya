@@ -20,15 +20,19 @@ void calculator(void){
 	std::cout << "Please define the second regular language L2: ";
 	L2.define(std::cin);
 	do{
-		showMenu(std::cout)
+		showMenu(std::cout);
 		std::cout << "Option: ";
 		std::cin >> option;
 		switch(option){
 			case 0:
-				if(L1.isProdByRE())
+				if(L1.isProdByRE()){
 					L1.writeRE(std::cout);
-				else
+					std::cout << std::endl;
+				}
+				else{
 					L1.write(std::cout);
+					std::cout << std::endl;
+				}
 			break;
 			case 1:	L1.invert();
 			break;

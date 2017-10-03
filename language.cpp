@@ -10,7 +10,7 @@
 namespace CYA{
 
 	Language::Language(){
-
+		prodByRE_ = false;
 	}
 
 	void Language::L2RE(void){
@@ -26,24 +26,31 @@ namespace CYA{
 
 	void Language::invert(void){
 		Word tempWord;
+		std::set<Word> tempSetWord;
+		std::cout << setWords_.size() << std::endl;
 		for(std::set<Word>::iterator it = setWords_.begin(); it != setWords_.end(); it++){
 			tempWord = *it;
-			setWords_.erase(*it);
+			std::cout << "E invertimos " << std::endl;
 			tempWord.invert();
-			setWords_.insert(tempWord);
+			std::cout << "Resultado: " << tempWord.obtWord() << std::endl;
+			tempSetWord.insert(tempWord);
 		}
+
+		setWords_ = tempSetWord;
 		L2RE();
 	}
 
 	void Language::concatenate(Language L){
 		Word tempWord;
+		std::set<Word> tempSetWord;
 		for(std::set<Word>::iterator it1 = setWords_.begin(); it1 != setWords_.end(); it1++)
 			for(std::set<Word>::iterator it2 = L.setWords_.begin(); it2 != L.setWords_.end(); it2++){
 				tempWord = *it1;
-				setWords_.erase(*it1);
 				tempWord.concatenate(*it2);
-				setWords_.insert(tempWord);
+				tempSetWord.insert(tempWord);
 			}
+
+		setWords_ = tempSetWord;
 		L2RE();
 	}
 

@@ -1,0 +1,10 @@
+L1 = {cerdo, oveja, vaca}
+L2 = {leon, serpiente, piedra}
+
+# 1 No reconoce el lenguaje vacío
+# 2 (Solucionado) Invert no funciona correctamente, hay palabras que no invierte
+    Solución: El tamaño cambia y las posiciones de entre los elementos del set haciendo
+    que setWords_.end() va cambiabdo a medida del for
+# 3 (Solucionado)La concatenación no funciona correctamente
+    Solución: el operador de la clase word  operator<() no funciona correctamente;
+

@@ -1,5 +1,5 @@
 #include "word.hpp"
-
+#include <iostream>
 namespace CYA{
 	Word::Word(){
 		word_.resize(0);
@@ -35,16 +35,13 @@ namespace CYA{
 		return *this;
 	}
 
-	bool Word::operator<(const Word& word) const{	// necesario, promete al compilador no tocar el word
+	bool Word::operator<(const Word& word) const{	// necesario, promete al compilador no tocar el wordd
 		if(word_.size() == word.word_.size()){
-			long int s1 = 0, s2 = 0;
 			for(int i = 0; i < word_.size(); i++)
-				s1 += pow((int)word_[i], i + 1);
+				if(word_[i] != word.word_[i])
+					return word_[i] < word.word_[i];
 			
-			for(int i = 0; i < word.word_.size(); i++)
-				s2 += pow((int)word.word_[i], i + 1);
-
-			return s1 < s2;
+			return false;	// es la misma palabra
 		}
 		else
 			return word_.size() < word.word_.size();
