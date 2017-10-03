@@ -15,6 +15,7 @@ namespace CYA{
 
 	void Language::L2RE(void){
 		std::string tempW;
+		regularExpression_.obtRE().clear();
 		for(std::set<Word>::iterator it = setWords_.begin(); it != --setWords_.end(); it++){
 			tempW = it->obtWord();
 			regularExpression_.obtRE().append(tempW);
@@ -30,9 +31,7 @@ namespace CYA{
 		std::cout << setWords_.size() << std::endl;
 		for(std::set<Word>::iterator it = setWords_.begin(); it != setWords_.end(); it++){
 			tempWord = *it;
-			std::cout << "E invertimos " << std::endl;
 			tempWord.invert();
-			std::cout << "Resultado: " << tempWord.obtWord() << std::endl;
 			tempSetWord.insert(tempWord);
 		}
 
@@ -97,17 +96,23 @@ namespace CYA{
 			return false;
 	}
 
-	void Language::power(int n){		
-		powerR(n);
+	void Language::power(int n){
+		if(n > 0)	
+			powerR(n);
+		else{
+			setWords_.clear();
+			Word w('&');
+			setWords_.insert(w);
+		}
 		L2RE();
 	}
 
 	void Language::powerR(int n){
 		if(n == 0){
-			Word A;
-			setWords_.clear();
+			Word A('&');
 			setWords_.insert(A);
-		}else if(n > 0){
+		}
+		else if(n > 0){
 			concatenate(*this);
 			powerR(n - 1);
 		}
@@ -127,6 +132,8 @@ namespace CYA{
 
 	void Language::kleenPlus(void){
 		L2RE();
+		this->writeRE(std::cout);
+		std::cout << std::endl;
 		prodByRE_ = true;
 		std::string tempER;
 		tempER.push_back('(');
@@ -151,14 +158,13 @@ namespace CYA{
 			if(rawLanguage.size() == 2)
 				empty_ = true;
 			else{
-				Word tW;
 				std::string w;
 				for(int i = 1; i < rawLanguage.size() - 1; i++){
 					if(rawLanguage[i] != ',' && !isspace(rawLanguage[i]))
 						w.push_back(rawLanguage[i]);
 
 					if(rawLanguage[i] == ',' || rawLanguage[i + 1] == '}'){
-						tW = w.c_str();
+						Word tW(w);
 						w.clear();
 						setWords_.insert(tW);
 					}

@@ -8,3 +8,7 @@ L2 = {leon, serpiente, piedra}
 # 3 (Solucionado)La concatenación no funciona correctamente
     Solución: el operador de la clase word  operator<() no funciona correctamente;
 
+# 4 (Solucionado)Fallo en la potencia, da la cadena vacía
+    Solución: fallo en el diseño de la potencia y la asimilación de la cadena vacía
+# 5 (Solucionado)Fallo en los cierres, no dan la expresión regular correcta
+    Solución: hay que limpiar la cadena de expresión regular

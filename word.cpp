@@ -11,6 +11,18 @@ namespace CYA{
 		alphabet_ = A;
 	}
 
+	Word::Word(char c){
+		if(c == '&')
+			empty_ = true;
+
+		word_.push_back(c);
+	}
+
+	Word::Word(const std::string& ws){
+		word_ = ws;
+		empty_ = false;
+	}
+
 	Word::Word(const Word& w){
 		alphabet_ = w.alphabet_;
 		word_ = w.word_;
@@ -26,25 +38,25 @@ namespace CYA{
 		// Word es la clase
 		// word es el objeto de la clase Word
 		// word_ es el atributo string del objeto word de la clase Word...
-
+		empty_ = word.empty_;
 		return *this;
 	}
 
 	Word& Word::operator=(const char* word){
 		word_ = word;
+		empty_ = false;
 		return *this;
 	}
 
-	bool Word::operator<(const Word& word) const{	// necesario, promete al compilador no tocar el wordd
-		if(word_.size() == word.word_.size()){
-			for(int i = 0; i < word_.size(); i++)
-				if(word_[i] != word.word_[i])
-					return word_[i] < word.word_[i];
-			
-			return false;	// es la misma palabra
-		}
-		else
+	bool Word::operator<(const Word& word)const{	// necesario, promete al compilador no tocar el word
+		if(word_.size() != word.word_.size())
 			return word_.size() < word.word_.size();
+
+		for(int i = 0; i < word_.size(); i++)
+			if(word_[i] != word.word_[i])
+				return word_[i] < word.word_[i];
+		
+		return false;	// es la misma palabra
 	}
 
 	void Word::invert(void){
@@ -61,7 +73,10 @@ namespace CYA{
 	}
 
 	void Word::concatenate(Word w){
-		word_ += w.obtString();
+		if(!empty_)
+			word_ += w.obtString();
+		else
+			word_ = w.obtString();
 	}
 
 	bool Word::operator==(const Word& w)const{
@@ -74,5 +89,9 @@ namespace CYA{
 	std::ostream& Word::write(std::ostream& os){
 		os << word_;
 		return os;
+	}
+
+	bool Word::isEmpty(void){
+		return empty_;
 	}
 }

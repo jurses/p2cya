@@ -16,6 +16,8 @@ namespace CYA{
 		Word();
 		Word(const Alphabet&);
 		Word(const Word&);
+		Word(const std::string&);
+		Word(char);
 		Word& operator=(const char*);
 		Word& operator=(const Word&);
 		bool operator==(const Word&)const;
@@ -23,6 +25,7 @@ namespace CYA{
 		bool operator<(const Word&)const;
 		void concatenate(Word);
 		void invert(void);
+		bool isEmpty(void);
 
 		std::ostream& write(std::ostream&);
 		std::string obtString(void);
