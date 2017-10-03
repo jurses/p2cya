@@ -5,6 +5,7 @@
 #include "regExp.hpp"
 #include <set>
 #include <string>
+#include <iostream>
 
 namespace CYA{
 	class Language{
@@ -13,9 +14,11 @@ namespace CYA{
 		RegExp regularExpression_;
 		bool prodByRE_;	// Indica si este lenguaje es producido por una E.R. dada por el usuario
 						// quedará desfasado este atributo
+		bool empty_;
 		void powerR(int);
 	public:
 		Language();
+		std::istream& define(std::istream&);
 		void invert(void);
 		void concatenate(Language);
 		void unite(Language&);

@@ -14,7 +14,7 @@ namespace CYA{
 	Word::Word(const Word& w){
 		alphabet_ = w.alphabet_;
 		word_ = w.word_;
-		empty = w.empty_;
+		empty_ = w.empty_;
 	}
 
 	const char* Word::obtWord(void){
@@ -35,7 +35,7 @@ namespace CYA{
 		return *this;
 	}
 
-	bool Word::operator<(const Word& word){
+	bool Word::operator<(const Word& word) const{	// necesario, promete al compilador no tocar el word
 		if(word_.size() == word.word_.size()){
 			long int s1 = 0, s2 = 0;
 			for(int i = 0; i < word_.size(); i++)
@@ -67,7 +67,7 @@ namespace CYA{
 		word_ += w.obtString();
 	}
 
-	bool Word::operator==(Word& w){
+	bool Word::operator==(const Word& w)const{
 		if(word_.compare(w.word_) == 0)
 			return true;
 		else

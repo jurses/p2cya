@@ -18,9 +18,9 @@ namespace CYA{
 		Word(const Word&);
 		Word& operator=(const char*);
 		Word& operator=(const Word&);
-		bool operator==(Word&);
+		bool operator==(const Word&)const;
 		const char* obtWord(void);
-		bool operator<(const Word&);
+		bool operator<(const Word&)const;
 		void concatenate(Word);
 		void invert(void);
 

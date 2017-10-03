@@ -8,6 +8,11 @@
 	*/
 
 namespace CYA{
+
+	Language::Language(){
+
+	}
+
 	void Language::invert(void){
 		Word tempWord;
 		for(std::set<Word>::iterator it = setWords_.begin(); it != setWords_.end(); it++){
@@ -42,12 +47,14 @@ namespace CYA{
 	void Language::intersection(Language& L){
 		std::set<Word> aux;
 		for(std::set<Word>::iterator it1 = setWords_.begin(); it1 != setWords_.end(); it1++)
-			for(std::set<Word>::iterator it2 = L.setWords_.begin(); it2 != L.setWords_.end(); it2++)
+			for(std::set<Word>::iterator it2 = L.setWords_.begin(); it2 != L.setWords_.end(); it2++){
 				if(*it1 == *it2)
 					aux.insert(*it1);
+			}
 	}
 
 	bool Language::subLanguage(Language& L){
+		Word tempWord1, tempWord2;
 		std::set<Word> aux;
 		for(std::set<Word>::iterator it1 = setWords_.begin(); it1 != setWords_.end(); it1++)
 			for(std::set<Word>::iterator it2 = L.setWords_.begin(); it2 != L.setWords_.end(); it2++){
@@ -85,5 +92,36 @@ namespace CYA{
 
 	void Language::kleenStar(void){
 		prodByRE_ = true;
+	}
+
+	Language& Language::operator=(const Language& L){
+		setWords_ = L.setWords_;
+		regularExpression_ = L.regularExpression_;
+		prodByRE_ = L.prodByRE_;
+		return *this;
+	}
+
+	std::istream& Language::define(std::istream& is){
+		std::string rawLanguage;
+		is >> rawLanguage;
+		if(rawLanguage[0] == '{' && rawLanguage[rawLanguage.size() - 1] == '}'){
+			if(rawLanguage.size() == 2)
+				empty_ = true;
+			else{
+				Word tW;
+				std::string w;
+				for(int i = 1; i < rawLanguage.size() - 1; i++){
+					if(rawLanguage[i] != ',')
+						w.push_back(rawLanguage[i]);
+					else{
+						tW = w.c_str();
+						w.clear();
+						setWords_.insert(tW);
+					}
+				}
+			}
+		}
+		
+		return is;
 	}
 }
