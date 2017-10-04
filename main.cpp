@@ -24,6 +24,16 @@ void calculator(void){
 		std::cout << "Option: ";
 		std::cin >> option;
 		switch(option){
+			case 'A':
+				if(L1.isProdByRE()){
+					L1.writeRE(std::cout);
+					std::cout << std::endl;
+				}
+				else{
+					L1.write(std::cout);
+					std::cout << std::endl;
+				}
+			break;
 			case 0:
 				if(L1.isProdByRE()){
 					L1.writeRE(std::cout);
@@ -68,12 +78,13 @@ void calculator(void){
 			break;
 			default: std::cout << "Incorrect option, try again" << std::endl;
 		}
-	}while(option != 0);
+	}while(option != 0 || option != 'A');
 }
 
 std::ostream& showMenu(std::ostream& os){
 	os << "Operations with L1" << std::endl;
-	os << "1. Invert" << std::endl
+	os << "A. Show result" << std::endl
+	<< "1. Invert" << std::endl
 	<< "2. Concatenate with L2" << std::endl
 	<< "3. Unite with L2" << std::endl
 	<< "4. Difference with L2" << std::endl

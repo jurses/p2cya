@@ -60,24 +60,34 @@ namespace CYA{
 	}
 
 	void Language::unite(Language& L){
-		for(std::set<Word>::iterator it = L.setWords_.begin(); it != L.setWords_.end(); it++)
-			setWords_.insert(*it);
+		if(!empty_)
+			for(std::set<Word>::iterator it = L.setWords_.begin(); it != L.setWords_.end(); it++)
+				setWords_.insert(*it);
 		L2RE();
 	}
 
 	void Language::difference(Language& L){
-		for(std::set<Word>::iterator it = L.setWords_.begin(); it != L.setWords_.end(); it++)
-			setWords_.erase(*it);
+		if(!empty_)
+			for(std::set<Word>::iterator it = L.setWords_.begin(); it != L.setWords_.end(); it++)
+				setWords_.erase(*it);
+
+		if(setWords_.size() == 0)
+			empty_ = true;
 		L2RE();
 	}
 
 	void Language::intersection(Language& L){
 		std::set<Word> aux;
-		for(std::set<Word>::iterator it1 = setWords_.begin(); it1 != setWords_.end(); it1++)
-			for(std::set<Word>::iterator it2 = L.setWords_.begin(); it2 != L.setWords_.end(); it2++){
-				if(*it1 == *it2)
-					aux.insert(*it1);
-			}
+		if(!empty_){
+			for(std::set<Word>::iterator it1 = setWords_.begin(); it1 != setWords_.end(); it1++)
+				for(std::set<Word>::iterator it2 = L.setWords_.begin(); it2 != L.setWords_.end(); it2++){
+					if(*it1 == *it2)
+						aux.insert(*it1);
+				}
+			setWords_ = aux;
+			if(setWords_.size() == 0)
+				empty_ = true;
+		}
 		L2RE();
 	}
 
@@ -103,7 +113,7 @@ namespace CYA{
 	}
 
 	void Language::power(int n){
-		if(n > 0 && !empty_)	
+		if(n > 0)	
 			powerR(n);
 		else if(n == 0){
 			Word w('&');
